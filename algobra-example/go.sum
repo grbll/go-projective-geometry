@@ -1,2 +1,4 @@
 github.com/glycerine/algobra v0.2.4-jea h1:oCzd6CCqZEpmUxmYXs3O3pJsgxXnx9ihc0+qw+Ugd4A=
 github.com/glycerine/algobra v0.2.4-jea/go.mod h1:EJuyrXhtPjITMp8E81rwfzV81e5UZSghvNEXNhWSrL4=
+github.com/grbll/go-projective-geometry/pg2 v0.0.0-20260906131941-8528c14dd5ae h1:o/xRhvg2j0vPYMWZELgtihVsLexNxRW0cCDYAdM1YJE=
+github.com/grbll/go-projective-geometry/pg2 v0.0.0-20260906131941-8528c14dd5ae/go.mod h1:rjY55GpP3VN8pu2RvOKEkRaR80iRMTcblzT1bqulqQc=
