@@ -5,7 +5,7 @@ import (
 
 	"github.com/glycerine/algobra/finitefield"
 	"github.com/glycerine/algobra/finitefield/ff"
-	"github.com/grbll/go-projective-geometry/pg2"
+	ffr "github.com/grbll/go-projective-geometry/pg2/ffrepresentation"
 )
 
 func TestPoint(t *testing.T) {
@@ -14,7 +14,7 @@ func TestPoint(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	p := pg2.PointFFRepresentation[ff.Element]{
+	p := ffr.PointFFRepresentation[ff.Element]{
 		X: field.ElementFromUnsigned(1),
 		Y: field.ElementFromUnsigned(2),
 		Z: field.ElementFromUnsigned(3),
