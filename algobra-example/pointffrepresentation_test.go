@@ -14,7 +14,7 @@ func TestPoint(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	p := ffr.PointFFRepresentation[ff.Element]{
+	p := ffr.Point[ff.Element]{
 		X: field.ElementFromUnsigned(1),
 		Y: field.ElementFromUnsigned(2),
 		Z: field.ElementFromUnsigned(3),
