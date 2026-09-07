@@ -19,23 +19,23 @@ func TestCanonical(t *testing.T) {
 
 	tests := []struct {
 		name string
-		in   ffr.Coordinates[AlgobraElement]
-		want ffr.Coordinates[AlgobraElement]
+		in   ffr.Coordinates
+		want ffr.Coordinates
 	}{
 		{
 			name: "x nonzero",
-			in:   ffr.Coordinates[AlgobraElement]{X: 2, Y: 3, Z: 4},
-			want: ffr.Coordinates[AlgobraElement]{X: 1, Y: 4, Z: 2},
+			in:   ffr.Coordinates{X: 2, Y: 3, Z: 4},
+			want: ffr.Coordinates{X: 1, Y: 4, Z: 2},
 		},
 		{
 			name: "x zero y nonzero",
-			in:   ffr.Coordinates[AlgobraElement]{X: 0, Y: 2, Z: 3},
-			want: ffr.Coordinates[AlgobraElement]{X: 0, Y: 1, Z: 4},
+			in:   ffr.Coordinates{X: 0, Y: 2, Z: 3},
+			want: ffr.Coordinates{X: 0, Y: 1, Z: 4},
 		},
 		{
 			name: "x and y zero",
-			in:   ffr.Coordinates[AlgobraElement]{X: 0, Y: 0, Z: 3},
-			want: ffr.Coordinates[AlgobraElement]{X: 0, Y: 0, Z: 3},
+			in:   ffr.Coordinates{X: 0, Y: 0, Z: 3},
+			want: ffr.Coordinates{X: 0, Y: 0, Z: 3},
 		},
 	}
 
