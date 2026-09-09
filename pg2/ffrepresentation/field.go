@@ -6,6 +6,7 @@ type FElement interface {
 
 type Field[E FElement] interface {
 	Elements() []E
+	Card() uint
 	Zero() E
 	One() E
 	Neg(E) E

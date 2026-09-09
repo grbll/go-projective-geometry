@@ -16,8 +16,8 @@ type Line[E FElement] struct {
 
 type FFProjectivePlane[E FElement] struct {
 	Field  Field[E]
-	Points map[Coordinates]E
-	Lines  map[Coordinates]E
+	Points map[Coordinates]*Point[E]
+	Lines  map[Coordinates]*Line[E]
 }
 
 func (p *FFProjectivePlane[E]) Canonical(c Coordinates) Coordinates {
@@ -39,21 +39,15 @@ func CoordinatesFrom(start Coordinates, k uint) iter.Seq[Coordinates] {
 			if !yield(c) {
 				return
 			}
-
-			// Increment Z.
 			if c.Z+1 < k {
 				c.Z++
 				continue
 			}
-
-			// Start next Y.
 			c.Z = 0
 			if c.Y+1 < k {
 				c.Y++
 				continue
 			}
-
-			// Start next X.
 			c.Y = 0
 			if c.X+1 < k {
 				c.X++
@@ -61,6 +55,47 @@ func CoordinatesFrom(start Coordinates, k uint) iter.Seq[Coordinates] {
 			}
 
 			return
+		}
+	}
+}
+
+func New[E FElement](field Field[E]) *FFProjectivePlane[E] {
+	q := field.Card()
+	p := &FFProjectivePlane[E]{
+		Field:  field,
+		Points: make(map[Coordinates]*Point[E], q*q*q-1),
+		Lines:  make(map[Coordinates]*Line[E], q*q*q-1),
+	}
+
+	card := field.Card()
+
+	for c := range CoordinatesFrom(Coordinates{0, 0, 1}, card) {
+		pc := &Point[E]{Included: make([]*Line[E], q+1)}
+		lc := &Line[E]{Includes: make([]*Point[E], q+1)}
+
+		for i := uint(1); i < card; i++ {
+			m := field.Ele(i)
+
+			cc := Coordinates{
+				X: field.Mult(field.Ele(c.X), m).Uint(),
+				Y: field.Mult(field.Ele(c.Y), m).Uint(),
+				Z: field.Mult(field.Ele(c.Z), m).Uint(),
+			}
+
+			p.Points[cc] = pc
+			p.Lines[cc] = lc
+		}
+	}
+
+	return p
+}
+
+func (p FFProjectivePlane[E]) generateLineInclusions(c Coordinates) {
+	line := p.Lines[c]
+	if c.X == 0 && c.Y == 0 {
+		for i := uint(1); i < p.Field.Card(); i++ {
+			point := p.Points[Coordinates{X: 1, Y: i, Z: 0}]
+			line.Includes[i] = point
 		}
 	}
 }
