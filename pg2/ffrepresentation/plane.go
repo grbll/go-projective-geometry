@@ -70,8 +70,8 @@ func New[E FElement](field Field[E]) *FFProjectivePlane[E] {
 	card := field.Card()
 
 	for c := range CoordinatesFrom(Coordinates{0, 0, 1}, card) {
-		pc := &Point[E]{Included: make([]*Line[E], q+1)}
-		lc := &Line[E]{Includes: make([]*Point[E], q+1)}
+		pc := &Point[E]{Included: make([]*Line[E], 0, q+1)}
+		lc := &Line[E]{Includes: make([]*Point[E], 0, q+1)}
 
 		for i := uint(1); i < card; i++ {
 			m := field.Ele(i)
@@ -90,12 +90,22 @@ func New[E FElement](field Field[E]) *FFProjectivePlane[E] {
 	return p
 }
 
-func (p FFProjectivePlane[E]) generateLineInclusions(c Coordinates) {
+func (p FFProjectivePlane[E]) generateLineInclusions(c Coordinates) *[]*Point[E] {
+	field := p.Field
 	line := p.Lines[c]
-	if c.X == 0 && c.Y == 0 {
-		for i := uint(1); i < p.Field.Card(); i++ {
-			point := p.Points[Coordinates{X: 1, Y: i, Z: 0}]
-			line.Includes[i] = point
+	if c.Z == 0 {
+		line.Includes = append(line.Includes, p.Points[Coordinates{X: 0, Y: 0, Z: 1}])
+		if c.Y == 0 {
+			for i := uint(0); i < field.Card(); i++ {
+				line.Includes = append(line.Includes, p.Points[Coordinates{X: 0, Y: 1, Z: i}])
+			}
+			return &line.Includes
+		} else { //c.Y==0
+			Y := field.Mult(field.Neg(field.Ele(c.X)), field.Inv(field.Ele(c.Y))).Uint()
+			for i := uint(0); i < p.Field.Card(); i++ {
+				line.Includes = append(line.Includes, p.Points[Coordinates{X: 0, Y: Y, Z: i}])
+			}
 		}
 	}
+	return &line.Includes
 }
